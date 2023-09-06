@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\AddProductService;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
@@ -13,6 +14,13 @@ class ProductsImport implements ToCollection
 {
     public $not_have = [];
     public $updated = [];
+    protected $addProductService;
+
+    public function __construct(AddProductService $addProductService)
+    {
+        $this->addProductService = $addProductService;
+    }
+
     public function collection(Collection $rows)
     {
         $count = 0;
@@ -40,16 +48,7 @@ class ProductsImport implements ToCollection
 
                     $controller = new Controller();
                     $image = $controller->show_images(['logo_no_background.png']);
-                    Product::create([
-                        'name' => $row[1],
-                        'price' => $row[2],
-                        'quantity' => $row[3],
-                        'brand_id' => $brand->id,
-                        'category_id' => $category->id,
-                        'description' => $row[6],
-                        'code' => $row[7],
-                        'images' => $image
-                    ]);
+                    // $this->addProductService($name)
                 }
             }
         }

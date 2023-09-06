@@ -14,8 +14,6 @@ class ChangeCartItems extends Migration
     public function up()
     {
         Schema::table('cart_items', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
             $table->unsignedBigInteger('bill_id')->nullable(true)->change();
         });
     }
